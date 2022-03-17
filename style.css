@@ -1,0 +1,16 @@
+.output-window {
+	text-align: center;
+	margin: 0 auto;
+}
+
+.btn-container {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	justify-content: center;
+	align-content: center;
+}
+
+.btn {
+	width: 80px;
+	height: 80px;
+}

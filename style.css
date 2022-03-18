@@ -1,13 +1,33 @@
 .output-window {
 	text-align: center;
-	margin: 0 auto;
+	margin: 8px auto;
+	border: 3px solid black;
+}
+
+.calculator-container {
+	display: flex;
 }
 
 .btn-container {
+	display: flex;
+	gap: 0 20px;
+	justify-content: center;
+}
+
+.digit-container {
 	display: grid;
 	grid-template-columns: auto auto auto;
 	justify-content: center;
 	align-content: center;
+	gap: 6px;
+}
+
+.function-container {
+	display: grid;
+	grid-template-columns: auto;
+	justify-content: center;
+	align-content: center;
+	gap: 6px;
 }
 
 .btn {

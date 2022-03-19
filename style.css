@@ -24,7 +24,7 @@
 
 .function-container {
 	display: grid;
-	grid-template-columns: auto;
+	grid-template-columns: auto auto;
 	justify-content: center;
 	align-content: center;
 	gap: 6px;

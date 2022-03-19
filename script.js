@@ -6,6 +6,7 @@
 let first_num;
 let second_num;
 let operator;
+let is_first_num_exist = false;
 let is_second_num_exist = false;
 let is_operator_pressed = false;
 let result;
@@ -22,61 +23,63 @@ output.textContent = 0;
 
 digit_btns.forEach(btn => 
 	btn.addEventListener('click', function() {
-		handle_number_input(btn.value);
+		// display handling when input number after pressing '=' with no operator
+		if (!is_first_num_exist) {
+			output.textContent = '';
+			is_first_num_exist = true;
+		}
+		
+		// If there is already a first num, handle display to reflect second num input
+		if (is_operator_pressed) {
+			output.textContent = '';
+			is_operator_pressed = false;
+			is_second_num_exist = true;
+		}
+	
+		// number input handling
+		if (output.textContent == '0') {
+			output.textContent = btn.value;
+		} else {
+			output.textContent += btn.value;
+		}
+		result = output.textContent;
 	})
 );
 
-function handle_number_input(button_val) {
-	if (is_operator_pressed) {
-		output.textContent = '';
-		is_operator_pressed = false;
-		is_second_num_exist = true;
-	}
-
-	if (output.textContent == '0') {
-		output.textContent = button_val;
-	} else {
-		output.textContent += button_val;
-	}
-
-	result = output.textContent;
-	console.log(result);
-}
-function handle_window(button_val, operator) {
-	if (!operator) {
-		handle_number_input(button_val);
-	} else {
-
-	}
-}
-
 operator_btns.forEach(btn => btn.addEventListener('click', function() {
+	// if no first num store the value as soon as operator pressed
 	if (!first_num) {
-		first_num = parseInt(output.textContent);
+		first_num = parseInt(result);
+		is_first_num_exist = true;
 	} 
+
+	// if there is a second num and this function for chaining operators
 	if (is_second_num_exist) {
-		second_num = parseInt(output.textContent);
+		second_num = parseInt(result);
 		first_num = result = operate(operator, first_num, second_num);
 		output.textContent = result;
 	}
-	result = output.textContent;
+
 	operator = btn.value;
 	is_operator_pressed = true;
 	console.log(`${first_num} ${operator}`)
-
 }));
 
+// evaluate number and operators
 equal_btn.addEventListener('click', function() {
 	if (is_second_num_exist) {
 		second_num = parseInt(output.textContent);
-		first_num = result = operate(operator, first_num, second_num);
+		result = operate(operator, first_num, second_num);
 		output.textContent = result;
+		first_num = null;
 		second_num = null;
 		operator = null;
+		is_first_num_exist = false;
 		is_second_num_exist = false;
 	} 
 });
 
+// clear variables cache totally
 clear_btn.addEventListener('click', function() {
 	output.textContent = 0;
 	first_num = null;
@@ -84,10 +87,6 @@ clear_btn.addEventListener('click', function() {
 	operator = null;
 	result = null;
 });
-
-function getNum(btn) {
-	return btn.value;
-}
 
 //  basic functions
 const add = function(a, b) {

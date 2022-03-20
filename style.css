@@ -17,6 +17,10 @@ body {
 	margin-bottom: 120px;
 }
 
+img {
+	width: 80px;
+}
+
 .calculator-container {
 	margin: 0 auto;
 	padding: 20px;

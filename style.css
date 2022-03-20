@@ -1,11 +1,22 @@
-.output-window {
-	text-align: center;
-	margin: 8px auto;
-	border: 3px solid black;
+@font-face {
+	font-family: 'digital-7';
+	src: url(fonts/digital-7.ttf);
 }
 
-.calculator-container {
+.output-window {
+	box-shadow: 6px rgb(red);
+	background-color: aquamarine;
 	display: flex;
+	text-align: right;
+	margin: 8px auto;
+	padding-bottom: 6px;
+	padding-right: 6px;
+	border: 3px solid black;
+	font-size: 96px;
+	font-weight: 400;
+	font-family: digital-7;
+	color: black;
+	line-height: 1.02em;
 }
 
 .btn-container {
@@ -31,6 +42,33 @@
 }
 
 .btn {
-	width: 80px;
+	width: 90px;
 	height: 80px;
+	font-size: 20px;
+	border-radius: 10%;
+}
+
+.digit,
+.decimal {
+	background-color: rgb(255, 243, 134);
+	font-size: 36px;
+}
+
+.operator {
+	background-color: rgb(131, 211, 131);
+	font-size: 36px;
+}
+
+.equals {
+	background-color: rgb(79, 155, 255);
+	font-size: 36px;
+}
+
+.clear {
+	background-color: rgb(252, 179, 119);
+	font-size: 24px;
+}
+
+.back {
+	background-color: rgb(255, 194, 80);
 }

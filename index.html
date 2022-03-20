@@ -11,33 +11,37 @@
 	<body>
 		<h1>Calculator</h1>
 		<div class="container">
-
-			<!-- Output window-->
-			<div class="output-window"></div>
-			<input class="output-window">
-			<!-- Calculator buttons -->
-			<div class="btn-container">
-				<div class="digit-container">
-					<button class="btn digit" value="1">1</button>
-					<button class="btn digit" value="2">2</button>
-					<button class="btn digit" value="3">3</button>
-					<button class="btn digit" value="4">4</button>
-					<button class="btn digit" value="5">5</button>
-					<button class="btn digit" value="6">6</button>
-					<button class="btn digit" value="7">7</button>
-					<button class="btn digit" value="8">8</button>
-					<button class="btn digit" value="9">9</button>
-					<button class="btn decimal" value=".">.</button>
-					<button class="btn digit" value="0">0</button>
-					<button class="btn equals" value="=">=</button>
-				</div>
-				<div class="function-container">
-					<button class="btn operator" value="+">+</button>
-					<button class="btn operator" value="-">-</button>
-					<button class="btn operator" value="*">*</button>
-					<button class="btn operator" value="/">/</button>
-					<button class="btn clear">Clear</button>
-					<button class="btn back">Backspace</button>
+			<div class="calculator-container">
+				<!-- Output window-->
+				<!--<div class="output-window"></div>-->
+				<input class="output-window" type="text" value="0" disabled>
+				<!-- Calculator buttons -->
+				<div class="btn-container">
+					<div class="digit-container">
+						<button class="btn digit" value="1">1</button>
+						<button class="btn digit" value="2">2</button>
+						<button class="btn digit" value="3">3</button>
+						<button class="btn digit" value="4">4</button>
+						<button class="btn digit" value="5">5</button>
+						<button class="btn digit" value="6">6</button>
+						<button class="btn digit" value="7">7</button>
+						<button class="btn digit" value="8">8</button>
+						<button class="btn digit" value="9">9</button>
+						<button class="btn decimal" value=".">.</button>
+						<button class="btn digit" value="0">0</button>
+						<button class="btn equals" value="=">=</button>
+					</div>
+					<div class="function-container">
+						<button class="btn operator" value="+">+</button>
+						<button class="btn operator" value="-">-</button>
+						<button class="btn operator" value="*">*</button>
+						<button class="btn operator" value="/">/</button>
+						<button class="btn clear">Clear</button>
+						<button class="btn back">
+							Back
+							space
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

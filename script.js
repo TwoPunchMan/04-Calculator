@@ -21,13 +21,11 @@ const operator_btns = document.querySelectorAll('.operator');
 const equal_btn = document.querySelector('.equals');
 const clear_btn = document.querySelector('.clear');
 
-// set output window to 0
-output.textContent = 0;
-
 // keyboard support
 document.addEventListener('keydown', (event) => {
 
 	const OPERATORS = '+-*/';
+	const DIGITS = '0123456789.';
 
 	if (parseInt(event.key)) {
 		press_digit_key(event.key);
@@ -48,56 +46,69 @@ document.addEventListener('keydown', (event) => {
 	if (event.key == 'Enter') {
 		press_enter_key();
 	}
-	console.log(`key=${event.key} code=${event.code}`);
 });
 
 // functions can be used with actual keyboard or hitting the html buttons
 const press_digit_key = function(val) {
 	// display handling when input number after pressing '=' with no operator
 	if (!is_first_num_exist) {
-		output.textContent = '';
+		output.value = '';
 		is_first_num_exist = true;
 	}
 	
 	// If there is already a first num, handle display to reflect second num input
 	if (is_operator_pressed) {
-		output.textContent = '';
+		output.value = '';
 		is_operator_pressed = false;
 		is_second_num_exist = true;
 	}
-
-	// number input handling
-	if (output.textContent == '0') {
-		output.textContent = val;
-	} else {
-		output.textContent += val;
+	
+	if (output.value == '0' && val == '.') {
+		output.value = '0.';
 	}
 
-	result = output.textContent;
+	// number input handling
+	if (output.value == '0') {
+		output.value = val;
+	} else {
+		output.value += val;
+	}
+
+	result = output.value;
 	console.log(result);
 }
 
 // add decimal if not exist to number
 const press_decimal_key = function() {
 	if (!is_decimal_exist) {
-		output.textContent += '.';
+		if (!first_num) {
+			output.value = '0.';
+			is_first_num_exist = true;
+		} else if (is_operator_pressed && !second_num) {
+			output.value = '0.';
+			is_operator_pressed = false;
+			is_second_num_exist = true;
+		} else {
+			output.value += '.';
+		}
+
 		is_decimal_exist = true;
 	}
 }
 
 // undo last key input
 const press_backspace_key = function() {
-	if (output.textContent) {
+	if (output.value) {
 		// delete last key input and update screen
-		let parser = output.textContent.charAt(output.textContent.length - 1);
-		output.textContent = output.textContent.slice(0, output.textContent.length - 1);
+		let parser = output.value.charAt(output.value.length - 1);
+		output.value = output.value.slice(0, output.value.length - 1);
 		
 		// if decimal deleted
 		if (parser == '.') is_decimal_exist = false;
 	}
 	
-	if (output.textContent == '') {
-		output.textContent = '0';
+	if (output.value == '') {
+		output.value = '0';
 	}
 }
 
@@ -105,15 +116,16 @@ const press_backspace_key = function() {
 const press_operator_key = function(value) {
 	// if no first num store the value as soon as operator pressed
 	if (!first_num) {
-		first_num = parseFloat(output.textContent);
+		first_num = parseFloat(output.value);
 		is_first_num_exist = true;
+		is_decimal_exist = false;
 	} 
 
 	// if there is a second num and this function for chaining operators
 	if (is_second_num_exist) {
-		second_num = parseFloat(output.textContent);
+		second_num = parseFloat(output.value);
 		first_num = result = operate(operator, first_num, second_num);
-		output.textContent = result;
+		output.value = result;
 	}
 
 	operator = value;
@@ -125,21 +137,20 @@ const press_operator_key = function(value) {
 const press_enter_key = function() {
 	if (is_second_num_exist) {
 		// only chcuk norris can divide by 0
-		second_num = parseFloat(output.textContent);
+		second_num = parseFloat(output.value);
 		if (operator == '/' && second_num == '0') {
 			result = "Muda Muda Muda!";
 		} else {
 			result = operate(operator, first_num, second_num);
 		}
 
-		output.textContent = result;
-		first_num = null;
-		second_num = null;
-		operator = null;
-		is_first_num_exist = false;
-		is_second_num_exist = false;
-		is_operator_pressed = false;
-		is_decimal_exist = false;
+		if (result != 'Muda Muda Muda!' && result.toString().length > 8) {
+			output.value = result.toPrecision(8);
+		} else {
+			output.value = result;
+		}
+		clear_all();
+		if (output.value.includes('.')) is_decimal_exist = true;
 	}
 }
 
@@ -171,12 +182,19 @@ equal_btn.addEventListener('click', function() {
 
 // clear variables cache totally
 clear_btn.addEventListener('click', function() {
-	output.textContent = 0;
+	output.value = 0;
+	clear_all();
+});
+
+const clear_all = function() {
 	first_num = null;
 	second_num = null;
 	operator = null;
-	result = null;
-});
+	is_first_num_exist = false;
+	is_second_num_exist = false;
+	is_operator_pressed = false;
+	is_decimal_exist = false;
+}
 
 //  basic functions
 const add = function(a, b) {

@@ -24,16 +24,69 @@ const clear_btn = document.querySelector('.clear');
 // set output window to 0
 output.textContent = 0;
 
+// keyboard support
+document.addEventListener('keydown', (event) => {
+
+	const OPERATORS = '+-*/';
+
+	if (parseInt(event.key)) {
+		press_digit_key(event.key);
+	}
+	
+	if (event.key == 'Backspace') {
+		press_backspace_key();
+	}
+
+	if (OPERATORS.includes(event.key)) {
+		press_operator_key(event.key);
+	}
+
+	if (event.key == '.') {
+		press_decimal_key();
+	}
+
+	if (event.key == 'Enter') {
+		press_enter_key();
+	}
+	console.log(`key=${event.key} code=${event.code}`);
+});
+
+// functions can be used with actual keyboard or hitting the html buttons
+const press_digit_key = function(val) {
+	// display handling when input number after pressing '=' with no operator
+	if (!is_first_num_exist) {
+		output.textContent = '';
+		is_first_num_exist = true;
+	}
+	
+	// If there is already a first num, handle display to reflect second num input
+	if (is_operator_pressed) {
+		output.textContent = '';
+		is_operator_pressed = false;
+		is_second_num_exist = true;
+	}
+
+	// number input handling
+	if (output.textContent == '0') {
+		output.textContent = val;
+	} else {
+		output.textContent += val;
+	}
+
+	result = output.textContent;
+	console.log(result);
+}
+
 // add decimal if not exist to number
-decimal_btn.addEventListener('click', function() {
+const press_decimal_key = function() {
 	if (!is_decimal_exist) {
 		output.textContent += '.';
 		is_decimal_exist = true;
 	}
-});
+}
 
 // undo last key input
-back_btn.addEventListener('click', function() {
+const press_backspace_key = function() {
 	if (output.textContent) {
 		// delete last key input and update screen
 		let parser = output.textContent.charAt(output.textContent.length - 1);
@@ -46,36 +99,10 @@ back_btn.addEventListener('click', function() {
 	if (output.textContent == '') {
 		output.textContent = '0';
 	}
-});
+}
 
-digit_btns.forEach(btn => 
-	btn.addEventListener('click', function() {
-		// display handling when input number after pressing '=' with no operator
-		if (!is_first_num_exist) {
-			output.textContent = '';
-			is_first_num_exist = true;
-		}
-		
-		// If there is already a first num, handle display to reflect second num input
-		if (is_operator_pressed) {
-			output.textContent = '';
-			is_operator_pressed = false;
-			is_second_num_exist = true;
-		}
-	
-		// number input handling
-		if (output.textContent == '0') {
-			output.textContent = btn.value;
-		} else {
-			output.textContent += btn.value;
-		}
-
-		result = output.textContent;
-		console.log(result);
-	})
-);
-
-operator_btns.forEach(btn => btn.addEventListener('click', function() {
+// operator + - * /
+const press_operator_key = function(value) {
 	// if no first num store the value as soon as operator pressed
 	if (!first_num) {
 		first_num = parseFloat(output.textContent);
@@ -89,13 +116,13 @@ operator_btns.forEach(btn => btn.addEventListener('click', function() {
 		output.textContent = result;
 	}
 
-	operator = btn.value;
+	operator = value;
 	is_operator_pressed = true;
 	console.log(`${first_num} ${operator}`)
-}));
+}
 
-// evaluate number and operators
-equal_btn.addEventListener('click', function() {
+// evaulate expression
+const press_enter_key = function() {
 	if (is_second_num_exist) {
 		// only chcuk norris can divide by 0
 		second_num = parseFloat(output.textContent);
@@ -111,9 +138,35 @@ equal_btn.addEventListener('click', function() {
 		operator = null;
 		is_first_num_exist = false;
 		is_second_num_exist = false;
+		is_operator_pressed = false;
+		is_decimal_exist = false;
 	}
+}
 
-	
+// attaching event listeners to buttons
+
+back_btn.addEventListener('click', function() {
+	press_backspace_key();
+});
+
+// 1-9 digit press on html
+digit_btns.forEach(btn => 
+	btn.addEventListener('click', function() {
+		press_digit_key(btn.value);
+	}
+));
+
+decimal_btn.addEventListener('click', function() {
+	press_decimal_key();
+});
+
+operator_btns.forEach(btn => btn.addEventListener('click', function() {
+	press_operator_key(btn.value);
+}));
+
+// evaluate number and operators
+equal_btn.addEventListener('click', function() {
+	press_enter_key();
 });
 
 // clear variables cache totally

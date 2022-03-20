@@ -25,9 +25,9 @@ const clear_btn = document.querySelector('.clear');
 document.addEventListener('keydown', (event) => {
 
 	const OPERATORS = '+-*/';
-	const DIGITS = '0123456789.';
+	const DIGITS = '0123456789';
 
-	if (parseInt(event.key)) {
+	if (DIGITS.includes(event.key)) {
 		press_digit_key(event.key);
 	}
 	
@@ -59,12 +59,9 @@ const press_digit_key = function(val) {
 	// If there is already a first num, handle display to reflect second num input
 	if (is_operator_pressed) {
 		output.value = '';
+		is_decimal_exist = false;
 		is_operator_pressed = false;
 		is_second_num_exist = true;
-	}
-	
-	if (output.value == '0' && val == '.') {
-		output.value = '0.';
 	}
 
 	// number input handling
@@ -75,25 +72,30 @@ const press_digit_key = function(val) {
 	}
 
 	result = output.value;
-	console.log(result);
+	console.log("digit = " + result);
 }
 
 // add decimal if not exist to number
 const press_decimal_key = function() {
+	
 	if (!is_decimal_exist) {
-		if (!first_num) {
+		if (!is_first_num_exist) {
 			output.value = '0.';
 			is_first_num_exist = true;
-		} else if (is_operator_pressed && !second_num) {
+		} else if (is_operator_pressed && !is_second_num_exist) {
 			output.value = '0.';
 			is_operator_pressed = false;
 			is_second_num_exist = true;
 		} else {
 			output.value += '.';
 		}
-
+		
 		is_decimal_exist = true;
 	}
+	console.log(first_num)
+	console.log(is_first_num_exist)
+	console.log(is_operator_pressed)
+	console.log(second_num)
 }
 
 // undo last key input
